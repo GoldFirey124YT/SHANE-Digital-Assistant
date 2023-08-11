@@ -18,7 +18,7 @@ engine = pyttsx3.init()
 engine.setProperty('volume', 1.0)
 
 # Wake word in Listen Function
-WAKE = "Shane"
+WAKE = "Lumia"
 
 # Used to store user commands for analysis
 CONVERSATION_LOG = "Conversation Log.txt"
@@ -31,7 +31,7 @@ try:
     ser = serial.Serial('com3', 9600)
     LED = True
 except serial.SerialException:
-    print("LEDs are not connected. There will be no lighting support.")
+    print("Sorry! LEDs are not connected. There will be no lighting support.")
     # If the LEDs aren't connected this will allow the program to skip the LED commands.
     LED = False
     pass
@@ -71,7 +71,7 @@ class Shane:
         # Will need to expand on "open" commands
         if command == "open youtube":
             s.speak("Opening YouTube.")
-            webbrowser.open("https://www.youtube.com/channel/UCW34Ghe9-_TCA5Vy3-Agfnw")
+            webbrowser.open("https://www.youtube.com/")
             pass
 
         elif command == "open facebook":
@@ -88,9 +88,14 @@ class Shane:
             s.speak("Opening your downloads folder.")
             os.startfile("C:/Users/Notebook/Downloads")
             pass
-
+            
+        elif command == "open twitter":
+            s.speak("Opening Twitter.")
+            webbrowser.open("https://www.twitter.com")
+            pass
+            
         else:
-            s.speak("I don't know how to open that yet.")
+            s.speak("I don't know how to open that yet. Sorry!")
             pass
 
     # Used to track the date of the conversation, may need to add the time in the future
@@ -149,7 +154,7 @@ class Shane:
             s.speak("It is currently " + str(int(temp['temp'])) + " degrees and " + status)
 
         else:
-            print("I haven't programmed that yet.")
+            print("I haven't programmed that yet. After all im still in beta")
 
     # If we're doing math, this will return the operand to do math with
     def get_operator(self, op):
@@ -192,7 +197,7 @@ class Shane:
 
     # Checks the first word in the command to determine if it's a search word
     def use_search_words(self, command):
-        s.speak("Here is what I found.")
+        s.speak("Here is what I found On google.")
         webbrowser.open("https://www.google.com/search?q={}".format(command))
 
     # Analyzes the command
@@ -208,7 +213,7 @@ class Shane:
             #     ser.write(listening_byte.encode("ascii"))  # encodes and sends the serial byte
 
             elif command == "introduce yourself":
-                s.speak("I am Shane. I'm a digital assistant.")
+                s.speak("I am Lumia. I'm Your digital assistant.")
 
             elif command == "what time is it":
                 self.understand_time(command)
@@ -230,7 +235,7 @@ class Shane:
                 self.use_search_words(command)
 
             else:
-                s.speak("I don't know how to do that yet.")
+                s.speak("I don't know how to do that yet. Sorry!")
 
                 if LED:
                     listening_byte = "H"  # H matches the Arduino sketch code for the green color
@@ -258,7 +263,7 @@ class Shane:
                         if LED:
                             listening_byte = "L"  # L matches the Arduino sketch code for the blue color
                             ser.write(listening_byte.encode("ascii"))  # encodes and sends the serial byte
-                        s.speak("How can I help you?")
+                        s.speak("How can I help you Today?")
                         return response.lower()
 
                     else:
@@ -280,7 +285,7 @@ while True:
     command = s.hear(recognizer, microphone, response)
 
     if command == previous_response:
-        s.speak("You already asked that. Ask again if you want to do that again.")
+        s.speak("You already asked that. Ask again if you want me to repeat")
         previous_command = ""
         response = s.listen(recognizer, microphone)
         command = s.hear(recognizer, microphone, response)
